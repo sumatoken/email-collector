@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Home() {
   const [info, setInfo] = useState({
@@ -11,12 +12,15 @@ export default function Home() {
     group: "",
   });
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
   useEffect(() => {
     console.log(info);
 
     return () => {};
   }, [info]);
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsRegistering(true);
     try {
       await fetch("/api/register", {
         method: "POST",
@@ -25,6 +29,7 @@ export default function Home() {
       })
         .then((res) => res.json())
         .then((res) => {
+          setIsRegistering(false);
           if (res.error) {
             toast.info(res.error, {
               position: "bottom-center",
@@ -79,7 +84,7 @@ export default function Home() {
           </span>{" "}
         </h1>
 
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -117,12 +122,11 @@ export default function Home() {
           </div>
 
           <button
-            type="button"
+            type="submit"
             disabled={isRegistered}
-            onClick={(e) => handleSubmit()}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            S'inscrire
+            {isRegistering ? <LoadingSpinner /> : "S'inscrire"}
           </button>
         </form>
       </div>
