@@ -24,9 +24,22 @@ export default function Home() {
         body: JSON.stringify(info),
       })
         .then((res) => res.json())
-        .then(() => {
+        .then((res) => {
+          if (res.error) {
+            toast.info(res.error, {
+              position: "bottom-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            return;
+          }
           setIsRegistered(true);
-          toast.success("Enregistré avec succès", {
+          toast.success(res.message, {
             position: "bottom-center",
             autoClose: 5000,
             hideProgressBar: false,
