@@ -10,6 +10,7 @@ export default function Home() {
     email: "",
     group: "",
   });
+  const [isRegistered, setIsRegistered] = useState(false);
   useEffect(() => {
     console.log(info);
 
@@ -23,7 +24,8 @@ export default function Home() {
         body: JSON.stringify(info),
       })
         .then((res) => res.json())
-        .then((res) =>
+        .then(() => {
+          setIsRegistered(true);
           toast.success("Enregistré avec succès", {
             position: "bottom-center",
             autoClose: 5000,
@@ -33,8 +35,8 @@ export default function Home() {
             draggable: true,
             progress: undefined,
             theme: "light",
-          })
-        );
+          });
+        });
     } catch (error) {
       toast.error("Quelque chose s'est mal passé!", {
         position: "bottom-center",
@@ -103,6 +105,7 @@ export default function Home() {
 
           <button
             type="button"
+            disabled={isRegistered}
             onClick={(e) => handleSubmit()}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
