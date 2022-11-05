@@ -13,11 +13,7 @@ export default function Home() {
   });
   const [isRegistered, setIsRegistered] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
-  useEffect(() => {
-    console.log(info);
 
-    return () => {};
-  }, [info]);
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRegistering(true);
